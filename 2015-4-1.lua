@@ -5,8 +5,8 @@ md5 = require(script.md5)
 key = "yzbqklnj"
 
 i = 0 repeat
-	prehash = key .. i
-	posthash = md5.sumhexa(prehash)
+	local prehash = key .. i
+	local posthash = md5.sumhexa(prehash)
 	print(posthash)
 	if posthash:sub(1, 5) == "00000" then break end
 	i += 1
