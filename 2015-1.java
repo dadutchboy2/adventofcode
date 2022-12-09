@@ -14,4 +14,4 @@ public class Main {
         System.out.println(i);
     }
 }
-//i couldnt for the life of me figure out how to read a file, java sucks and ill avoid it for the rest of my life
+//i couldnt for the life of me figure out how to read a file
