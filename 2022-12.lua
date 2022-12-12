@@ -35,6 +35,7 @@ function checkPosition(x, y)
 		end
 		
 		if height <= height2 + 1 then
+			--visualisation
 			local part = Instance.new("Part")
 			part.Position = Vector3.new(x2, height2 / 2, y2)
 			part.Size = Vector3.new(1, height2, 1)
