@@ -35,13 +35,6 @@ function checkPosition(x, y)
 		end
 		
 		if height <= height2 + 1 then
-			--visualisation
-			local part = Instance.new("Part")
-			part.Position = Vector3.new(x2, height2 / 2, y2)
-			part.Size = Vector3.new(1, height2, 1)
-			part.Color = stepUp and Color3.new(1, 1, 1) or Color3.new(1)
-			part.Anchored = true
-			part.Parent = workspace.Terrain
 			states[x2][y2] = true
 		end
 	end
