@@ -24,15 +24,15 @@ for x = 2960000 - 1000, 2960000 + 1000 do
 	for y = 3211000 - 1000, 3211000 + 1000 do
 		local scan = Vector2.new(x, y)
 		
-		local same = 0
+		local unscanned = 0
 		
 		for sensor, distance in sensors do
 			local distance2 = manhDist(scan, sensor)
 			
-			if distance < distance2 then same += 1 end
+			if distance < distance2 then unscanned += 1 end
 		end
 		
-		if same == 32 then print(x * 4000000 + y) return end
+		if unscanned == 32 then print(x * 4000000 + y) return end
 		
 		i += 1
 		
