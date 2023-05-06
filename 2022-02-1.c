@@ -10,7 +10,7 @@ int main() {
     while (fgets(line, 5, input)) {
         int other = line[0] - 65;
         int you = line[2] - 88;
-        int points = other + 1 + outcome(other, you) * 3;
+        int points = you + 1 + outcome(other, you) * 3;
         totalPoints += points;
     }
     printf("%d", totalPoints);
