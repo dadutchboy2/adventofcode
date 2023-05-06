@@ -2,7 +2,7 @@
 #include <stdlib.h>
 int main() {
     FILE *input;
-    input = fopen("aocc2201.txt", "r");
+    input = fopen("2022-01.txt", "r");
     char string[7];
     int sumAmount;
     int maxAmount;
