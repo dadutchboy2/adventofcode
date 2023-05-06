@@ -4,7 +4,7 @@ int you(int other, int outcome) {
     return outcome == 0 ? (other + 2) % 3 : outcome == 1 ? other : (other + 1) % 3;
 }
 int main() {
-    FILE *input = fopen("aocc2202.txt", "r");
+    FILE *input = fopen("2022-02.txt", "r");
     char line[5];
     int totalPoints = 0;
     while (fgets(line, 5, input)) {
