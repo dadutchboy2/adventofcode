@@ -10,7 +10,7 @@ function addPriority(character)
 	if byte >= 97 and byte <= 122 then
 		totalPriority += byte - 96
 	else
-		totalPriority += byte - 65 + 27
+		totalPriority += byte - 64 + 26
 	end
 end
 
