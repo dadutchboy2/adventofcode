@@ -1,0 +1,54 @@
+<script>
+input = `two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen`;
+names = [
+	"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
+];
+output = 0;
+input.split("\n").forEach((line) => {
+	let num = "";
+	for (let i = 0; i < line.length; i++) {
+		let dig;
+		for (let j = 0; j < 10; j++) {
+			if (line.indexOf(names[j], i) == i) {
+				dig = "" + j;
+				break;
+			}
+		}
+		if (dig) {
+			num += dig;
+			break;
+		}
+		dig = line.charAt(i);
+		if (!Number.isNaN(dig - 0)) {
+			num += dig;
+			break;
+		}
+	}
+	for (let i = line.length - 1; i > -1; i--) {
+		let dig;
+		for (let j = 0; j < 10; j++) {
+			if (line.indexOf(names[j], i) == i) {
+				dig = "" + j;
+				break;
+			}
+		}
+		if (dig) {
+			num += dig;
+			break;
+		}
+		dig = line.charAt(i);
+		if (!Number.isNaN(dig - 0)) {
+			num += dig;
+			break;
+		}
+	}
+	output += num - 0;
+});
+console.log(output);
+</script>
