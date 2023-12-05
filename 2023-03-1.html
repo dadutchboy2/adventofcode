@@ -1,0 +1,50 @@
+<script>
+nearLine = (lines, item, off) =>
+	(lines[item[1] + off] || "").slice(
+		Math.max(0, item[2] - 1),
+		item[2] + item[0].length + 1
+	);
+console.log(
+	((inp) =>
+		((lines) =>
+			lines.reduce((list, line, i) => (
+				line.split("").reduce((list, sym, j) => (
+					!isNaN(sym - 0) ?
+						((item) => (
+							item[0] = item[0] + sym,
+							item[1] == undefined && (
+								item[1] = i,
+								item[2] = j
+							)
+						))(list[list.length - 1]) :
+						list[list.length - 1][0] != "" &&
+							list.push([""]),
+					list
+				), list),
+				list[list.length - 1][0] != "" &&
+					list.push([""]),
+				list
+			), [[""]]).filter((item) => item[0] != "").reduce((sum, item) =>
+				sum + ([
+					nearLine(lines, item, -1),
+					nearLine(lines, item, 0),
+					nearLine(lines, item, 1)
+				].some((line) =>
+					line.split("").some((sym) =>
+						isNaN(sym - 0) && sym != "."
+					)
+				) ? item[0] - 0 : 0)
+			, 0)
+		)(inp.split("\n"))
+	)(`467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..`)
+);
+</script>
