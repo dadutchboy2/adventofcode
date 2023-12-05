@@ -1,0 +1,62 @@
+<script>
+nearLine = (lines, item, off) =>
+	(lines[item[1] + off] || "").slice(
+		Math.max(0, item[2] - 1),
+		item[2] + item[0].length + 1
+	);
+console.log(
+	((inp) =>
+		((lines) =>
+			lines.reduce((list, line, i) => (
+				line.split("").forEach((sym, j) =>
+					!isNaN(sym - 0) ?
+						((item) => (
+							item[0] = item[0] + sym,
+							item[1] == undefined && (
+								item[1] = i,
+								item[2] = j
+							)
+						))(list[list.length - 1]) :
+						list[list.length - 1][0] != "" &&
+							list.push([""])
+				),
+				list[list.length - 1][0] != "" &&
+					list.push([""]),
+				list
+			), [[""]]).filter((item) => item[0] != "").reduce((gears, item) => (
+				[
+					nearLine(lines, item, -1),
+					nearLine(lines, item, 0),
+					nearLine(lines, item, 1)
+				].forEach((line, i) =>
+					line.split("").forEach((sym, j) =>
+						((i, j) =>
+							sym == "*" && (
+								gears[i] = gears[i] || [],
+								gears[i][j] = gears[i][j] || [],
+								gears[i][j].push(item[0] - 0)
+							)
+						)(i + item[1] - 1, j + Math.max(0, item[2] - 1))
+					)
+				),
+				gears
+			), []).reduce((sum, gearLine) =>
+				sum + gearLine.reduce((sum, gear) =>
+					sum + (
+						gear.length == 2 ? gear[0] * gear[1] : 0
+					)
+				, 0)
+			, 0)
+		)(inp.split("\n"))
+	)(`467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..`)
+);
+</script>
