@@ -1,0 +1,16 @@
+<script>
+console.log(
+	((inp) =>
+		((rec) =>
+			Math.ceil(
+				(Math.sqrt(rec[0]**2 - 4 * rec[1]) + rec[0]) / 2
+			) - Math.floor(
+				(-Math.sqrt(rec[0]**2 - 4 * rec[1]) + rec[0]) / 2
+			) - 1
+		)(inp.split("\n").map((line) =>
+			line.split(":")[1].replace(/ /g, "") - 0
+		))
+	)(`Time:      7  15   30
+Distance:  9  40  200`)
+);
+</script>
