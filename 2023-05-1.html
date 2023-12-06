@@ -3,18 +3,18 @@ console.log(
 	((inp) =>
 		((blocks) =>
 			(([seeds, cats]) =>
-				cats.reduce((seeds, cat) =>
-					seeds.map((seed) =>
+				cats.reduce((vals, cat) =>
+					vals.map((val) =>
 						((map) =>
-							seed + map[0] - map[1]
+							val + map[0] - map[1]
 						)(
 							cat.filter((map) =>
-								seed >= map[1] && seed < map[1] + map[2]
+								val >= map[1] && val < map[1] + map[2]
 							)[0] || [0, 0]
 						)
 					)
-				, seeds).reduce((min, seed) =>
-					Math.min(min, seed)
+				, seeds).reduce((min, val) =>
+					Math.min(min, val)
 				, Number.MAX_VALUE)
 			)(
 				((seeds, cats) => [
