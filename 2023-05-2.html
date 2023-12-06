@@ -1,0 +1,104 @@
+<script>
+console.log(
+	((inp) =>
+		((blocks) =>
+			(([seeds, cats]) =>
+				cats.reduce((ranges, cat, i) =>
+					ranges.reduce((news, range) =>
+						cat.filter((line) =>
+							range[0] < line[1] + line[2] &&
+							range[0] + range[1] > line[1]
+						).reduce((news, line) => (
+							news.push([
+								line[0] - line[1],
+								Math.max(range[0], line[1]),
+								Math.min(
+									range[1] - Math.max(0, line[1] - range[0]),
+									line[2] - Math.max(0, range[0] - line[1]),
+								)
+							]),
+							news
+						), news)
+					, []).reduce((ranges, newr) =>
+						((ind) => (
+							((range) =>
+								[
+									[range[0], newr[1] - range[0]],
+									[newr[1] + newr[0], newr[2]],
+									[
+										newr[1] + newr[2],
+										(range[0] + range[1]) - (newr[1] + newr[2])
+									]
+								].reduce((news, range) => (
+									range[1] > 0 &&
+										news.push(range),
+									news
+								), [])
+							)(ranges[ind]).reduce((ranges, range) => (
+								ranges.push(range),
+								ranges
+							), ranges).splice(ind, 1),
+							ranges
+						))(
+							ranges.findIndex((range) =>
+								range[0] < newr[1] + newr[2] &&
+								range[0] + range[1] > newr[1]
+							)
+						)
+					, ranges)
+				, seeds).reduce((min, range) =>
+					Math.min(min, range[0])
+				, Number.MAX_VALUE)
+			)(
+				((seeds, cats) => [
+					seeds.split(": ")[1].split(" ").map((num) => num - 0).reduce(
+						(seeds, num, i) => (
+							i % 2 == 0 ?
+								seeds.push([num]) :
+								seeds[seeds.length - 1][1] = num,
+							seeds
+						), []
+					),
+					cats.map((cat) =>
+						cat.split(":\n")[1].split("\n").map((map) =>
+							map.split(" ").map((num) => num - 0)
+						)
+					)
+				])(blocks.shift(), blocks)
+			)
+		)(inp.split("\n\n"))
+	)(`seeds: 79 14 55 13
+
+seed-to-soil map:
+50 98 2
+52 50 48
+
+soil-to-fertilizer map:
+0 15 37
+37 52 2
+39 0 15
+
+fertilizer-to-water map:
+49 53 8
+0 11 42
+42 0 7
+57 7 4
+
+water-to-light map:
+88 18 7
+18 25 70
+
+light-to-temperature map:
+45 77 23
+81 45 19
+68 64 13
+
+temperature-to-humidity map:
+0 69 1
+1 0 69
+
+humidity-to-location map:
+60 56 37
+56 93 4`)
+);
+</script>
