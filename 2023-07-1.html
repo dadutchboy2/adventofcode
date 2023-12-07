@@ -1,0 +1,47 @@
+<script>
+console.log(
+	((vals, inp) =>
+		inp.split("\n").map((line) =>
+			(([hand, bid]) => [
+				hand,
+				bid - 0
+			])(line.split(" ").filter((sym) => sym))
+		).sort((a, b) =>
+			(([aType, bType]) =>
+				Math.sign(aType[0] - bType[0]) || Math.sign(aType[1] - bType[1])
+			)([a, b].map(([hand, bid]) => [
+				((counts) =>
+					counts[0] == 5 ? 6 :
+					counts[0] == 4 ? 5 :
+					counts[0] == 3 ? (
+						counts[1] == 2 ? 4 : 3
+					) :
+					counts[0] == 2 ? (
+						counts[1] == 2 ? 2 : 1
+					) :
+					0
+				)(
+					Object.values(
+						hand.split("").reduce((counts, card) => (
+							counts[card] = (counts[card] || 0) + 1,
+							counts
+						), {})
+					).sort((a, b) => Math.sign(a - b) * -1)
+				),
+				hand.split("").reduce((num, sym, i) =>
+					num + vals.length ** (hand.length - i) * vals.indexOf(sym)
+				, 0)
+			]))
+		).reduce((sum, [hand, bid], i) =>
+			sum + bid * (i + 1)
+		, 0)
+	)(
+		"23456789TJQKA",
+		`32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483`
+	)
+);
+</script>
