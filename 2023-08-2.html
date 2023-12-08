@@ -16,10 +16,9 @@ console.log(
 							stepList
 						)
 					], [node, 0, []])[2]
-				).map((cycle) => [ //oh, it appears they cycle. neat!
-					cycle[0] - (cycle[1] - cycle[0]),
-					cycle[1] - cycle[0]
-				]) //just use wolfram alpha for the least common muliple :)
+				).map((cycle) => //oh, it appears they cycle. neat!
+					cycle[1] - cycle[0] //and it also appears to start at 0. yay!
+				) //just use wolfram alpha for the least common muliple :)
 			)(
 				Object.keys(tree).reduce((map, node) => (
 					map[node] = dirs.reduce(([node, steps, stepList], dir) => [
