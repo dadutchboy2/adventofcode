@@ -1,0 +1,43 @@
+<script>
+console.log(
+	((inp) =>
+		(([dirs, tree]) =>
+			((map) =>
+				Object.keys(tree).reduce(([node, steps]) => [
+					node == "ZZZ" ? node : map[node][0],
+					steps + (node == "ZZZ" ? 0 : map[node][1])
+				], ["AAA", 0])[1]
+			)(
+				Object.keys(tree).reduce((map, node) => (
+					map[node] = dirs.reduce(([node, steps], dir) => [
+						node == "ZZZ" ? node : tree[node][dir],
+						steps + (node == "ZZZ" ? 0 : 1)
+					], [node, 0]),
+					map
+				), {})
+			)
+		)(
+			(([dirs, lines]) => [
+				dirs.split("").map((sym) => sym == "L" ? 0 : 1),
+				lines.split("\n").map((line) =>
+					(([node, path]) => [
+						node,
+						path.replace(/\(|\)/g, "").split(", ")
+					])(line.split(" = "))
+				).reduce((map, line) => (
+					map[line[0]] = line[1],
+					map
+				), {})
+			])(inp.split("\n\n"))
+		)
+	)(`RL
+
+AAA = (BBB, CCC)
+BBB = (DDD, EEE)
+CCC = (ZZZ, GGG)
+DDD = (DDD, DDD)
+EEE = (EEE, EEE)
+GGG = (GGG, GGG)
+ZZZ = (ZZZ, ZZZ)`)
+);
+</script>
