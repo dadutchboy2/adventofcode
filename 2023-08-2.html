@@ -1,0 +1,60 @@
+<script>
+console.log(
+	((inp) =>
+		(([dirs, tree]) =>
+			((map) =>
+				Object.keys(tree).filter((node) =>
+					node.substring(2) == "A"
+				).map((node) =>
+					Object.keys(tree).reduce(([node, steps, stepList]) => [
+						map[node][0],
+						steps + map[node][1], (
+							map[node][2].reduce((stepList, zSteps) => (
+								stepList.push(steps + zSteps),
+								stepList
+							), stepList),
+							stepList
+						)
+					], [node, 0, []])[2]
+				).map((cycle) => [ //oh, it appears they cycle. neat!
+					cycle[0] - (cycle[1] - cycle[0]),
+					cycle[1] - cycle[0]
+				]) //just use wolfram alpha for the least common muliple :)
+			)(
+				Object.keys(tree).reduce((map, node) => (
+					map[node] = dirs.reduce(([node, steps, stepList], dir) => [
+						tree[node][dir],
+						steps + 1, (
+							tree[node][dir].substring(2) == "Z" && stepList.push(steps + 1),
+							stepList
+						)
+					], [node, 0, []]),
+					map
+				), {})
+			)
+		)(
+			(([dirs, lines]) => [
+				dirs.split("").map((sym) => sym == "L" ? 0 : 1),
+				lines.split("\n").map((line) =>
+					(([node, path]) => [
+						node,
+						path.replace(/\(|\)/g, "").split(", ")
+					])(line.split(" = "))
+				).reduce((map, line) => (
+					map[line[0]] = line[1],
+					map
+				), {})
+			])(inp.split("\n\n"))
+		)
+	)(`LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)`)
+);
+</script>
