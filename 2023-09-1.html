@@ -1,0 +1,21 @@
+<script>
+console.log(
+	((inp) =>
+		inp.split("\n").map((line) =>
+			line.split(" ").map((num) => num - 0)
+		).reduce((sum, reads) =>
+			sum + reads.reduce((exts, read, i) => (
+				exts[i] = (exts[i - 1] || []).reduce((ext, num, i) => (
+					ext[i + 1] = ext[i] - num,
+					ext
+				), [read]),
+				exts
+			), []).at(-1).reduce((sum, num) =>
+				sum + num
+			, 0)
+		, 0)
+	)(`0 3 6 9 12 15
+1 3 6 10 15 21
+10 13 16 21 30 45`)
+);
+</script>
