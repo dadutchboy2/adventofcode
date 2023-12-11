@@ -1,0 +1,73 @@
+<script>
+repeat = (f, x) => {
+	while (([x, r] = f(x))[1]) {};
+	return x;
+};
+vec2Add = (a, b) => [
+	a[0] + b[0],
+	a[1] + b[1]
+];
+vec2Ind = (arr, ind) =>
+	(arr[ind[1]] || [])[ind[0]];
+vec2Eq = (a, b) =>
+	a[0] == b[0] && a[1] == b[1];
+vec2Neg = (vec) => [
+	0 - vec[0],
+	0 - vec[1]
+];
+console.log(
+	((cons, inp) =>
+		(map =>
+			(loop =>
+				(loop.length - 1) / 2
+			)(repeat(loop => [
+				(loop.push(
+					vec2Add(
+						loop.at(-1),
+						[[-1, 0], [1, 0], [0, -1], [0, 1]].find(dir =>
+							(
+								!loop.at(-2) ||
+								!vec2Eq(vec2Add(loop.at(-1), dir), loop.at(-2))
+							) &&
+							(f =>
+								f(vec2Ind(map, loop.at(-1)), dir) &&
+								f(vec2Ind(map, vec2Add(loop.at(-1), dir)), vec2Neg(dir))
+							)((sym, dir) =>
+								sym == "S" ||
+								cons[sym] && (
+									vec2Eq(cons[sym][0], dir) ||
+									vec2Eq(cons[sym][1], dir)
+								)
+							)
+						)
+					)
+				), loop),
+				!vec2Eq(loop.at(0), loop.at(-1))
+			], [
+				(y => [
+					map[y].findIndex(sym => sym == "S"),
+					y
+				])(map.findIndex(row =>
+					row.find(sym => sym == "S")
+				))
+			]))
+		)(inp.split("\n").map(
+			line => line.split("")
+		))
+	)(
+		{
+			"|": [[0, -1], [0, 1]],
+			"-": [[-1, 0], [1, 0]],
+			"L": [[1, 0], [0, -1]],
+			"J": [[-1, 0], [0, -1]],
+			"7": [[-1, 0], [0, 1]],
+			"F": [[1, 0], [0, 1]]
+		},
+		`7-F7-
+.FJ|7
+SJLL7
+|F--J
+LJ.LJ`
+	)
+);
+</script>

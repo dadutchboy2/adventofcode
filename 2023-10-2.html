@@ -1,0 +1,97 @@
+<script>
+repeat = (f, x) => {
+	while (([x, r] = f(x))[1]) {};
+	return x;
+};
+vec2Add = (a, b) => [
+	a[0] + b[0],
+	a[1] + b[1]
+];
+arr2Get = (arr, ind) =>
+	(arr[ind[1]] || [])[ind[0]];
+arr2Set = (arr, ind, val) =>
+	arr[ind[1]][ind[0]] = val;
+vec2Eq = (a, b) =>
+	a[0] == b[0] && a[1] == b[1];
+vec2Neg = (vec) => [
+	0 - vec[0],
+	0 - vec[1]
+];
+console.log(
+	((cons, inp) =>
+		(map =>
+			(loop =>
+				loop.reduce((loopMap, pos) => (
+					arr2Set(loopMap, pos, arr2Get(map, pos)),
+					loopMap
+				), map.map(
+					row => row.map(sym => ".")
+				)).reduce((amo, row, y) =>
+					amo + (
+						y == 0 ? 0 : row.reduce(([amo, hei, prev], cur, x) =>
+							x == 0 ? [amo, hei, cur] : (newHei => [
+								amo + (newHei == 1 && cur == "." ? 1 : 0),
+								newHei,
+								cur
+							])(hei * (cons[prev] && cons[prev].find(dir =>
+								vec2Eq(dir, [0, -1])
+							) || cur == "S" ? -1 : 1)) //lazy. S goes up in my input
+						, [0, -1])[0]
+					)
+				, 0)
+			)(repeat(loop => [
+				(loop.push(
+					vec2Add(
+						loop.at(-1),
+						[[-1, 0], [1, 0], [0, -1], [0, 1]].find(dir =>
+							(
+								!loop.at(-2) ||
+								!vec2Eq(vec2Add(loop.at(-1), dir), loop.at(-2))
+							) &&
+							(f =>
+								f(arr2Get(map, loop.at(-1)), dir) &&
+								f(arr2Get(map, vec2Add(loop.at(-1), dir)), vec2Neg(dir))
+							)((sym, dir) =>
+								sym == "S" ||
+								cons[sym] && (
+									vec2Eq(cons[sym][0], dir) ||
+									vec2Eq(cons[sym][1], dir)
+								)
+							)
+						)
+					)
+				), loop),
+				!vec2Eq(loop.at(0), loop.at(-1))
+			], [
+				(y => [
+					map[y].findIndex(sym => sym == "S"),
+					y
+				])(map.findIndex(row =>
+					row.find(sym => sym == "S")
+				))
+			]))
+		)(inp.split("\n").map(
+			line => line.split("")
+		))
+	)(
+		{
+			"|": [[0, -1], [0, 1]],
+			"-": [[-1, 0], [1, 0]],
+			"L": [[1, 0], [0, -1]],
+			"J": [[-1, 0], [0, -1]],
+			"7": [[-1, 0], [0, 1]],
+			"F": [[1, 0], [0, 1]]
+		},
+		`FF7FSF7F7F7F7F7F---7
+L|LJ||||||||||||F--J
+FL-7LJLJ||||||LJL-77
+F--JF--7||LJLJ7F7FJ-
+L---JF-JLJ.||-FJLJJ7
+|F|F-JF---7F7-L7L|7|
+|FFJF7L7F-JF7|JL---7
+7-L-JL7||F7|L7F-7F7|
+L.L7LFJ|||||FJL7||LJ
+L7JLJL-JLJLJL--JLJ.L`
+	)
+);
+</script>
